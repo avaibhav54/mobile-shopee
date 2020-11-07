@@ -3,6 +3,14 @@
     $item_id = $_GET['item_id'] ?? 1;
     foreach ($product->getData() as $item) :
         if ($item['item_id'] == $item_id) :
+
+            if($_SERVER['REQUEST_METHOD'] == "POST"){
+                if (isset($_POST['product-submit'])){
+                    // call method addToCart
+                    $Cart->addToCart($_POST['user_id'], $_POST['item_id']);
+                }
+            }
+
 ?>
 <section id="product" class="py-3">
     <div class="container">
@@ -11,16 +19,37 @@
                 <img src="<?php echo $item['item_image'] ?? "./assets/products/1.png" ?>" alt="product" class="img-fluid">
                 <div class="form-row pt-4 font-size-16 font-baloo">
                     <div class="col">
-                        <button type="submit" class="btn btn-danger form-control">Proceed to Buy</button>
+                    <form action="addr.php">
+                    <button type="submit" class="btn btn-danger form-control">Proceed to Buy</button></form>
                     </div>
                     <div class="col">
-                        <?php
-                        if (in_array($item['item_id'], $Cart->getCartId($product->getData('cart')) ?? [])){
-                            echo '<button type="submit" disabled class="btn btn-success font-size-16 form-control">In the Cart</button>';
-                        }else{
-                            echo '<button type="submit" name="top_sale_submit" class="btn btn-warning font-size-16 form-control">Add to Cart</button>';
-                        }
-                        ?>
+
+                    <form method="post">
+                            <input type="hidden" name="item_id" value="<?php echo $item['item_id'] ?? '1'; ?>">
+                            <input type="hidden" name="user_id" value="<?php echo $_SESSION['uid'] ?? '1';; ?>">
+                            <?php
+                            $conn = mysqli_connect("localhost", "root", "", "shopee");
+                            if($conn->connect_error){
+                                die("Connection Failed : ". $conn->connect_error);
+                            } 
+                            if(isset($_SESSION['uid'])){
+                            $us=$_SESSION['uid'];
+                            }
+                            else{
+                                $us=-1;
+
+                            }
+                            $i=$item['item_id'];
+                            $query="SELECT * FROM `cart` WHERE `user_id`='$us' AND `item_id`='$i'";
+                            $run=mysqli_query($conn,$query);
+                            if (mysqli_num_rows($run)){
+                                echo '<button type="submit" disabled class="btn btn-success form-control">In the Cart</button>';
+                            }else{
+                                echo '<button type="submit" name="product-submit" class="btn btn-warning  form-control ">Add to Cart</button>';
+                            }
+                            ?>
+            </form>
+        
                     </div>
                 </div>
             </div>
@@ -41,10 +70,7 @@
 
                 <!---    product price       -->
                 <table class="my-3">
-                    <tr class="font-rale font-size-14">
-                        <td>M.R.P:</td>
-                        <td><strike>Rs 162.00</strike></td>
-                    </tr>
+                    
                     <tr class="font-rale font-size-14">
                         <td>Deal Price:</td>
                         <td class="font-size-20 text-danger">Rs<span><?php echo $item['item_price'] ?? 0; ?></span><small class="text-dark font-size-12">&nbsp;&nbsp;Inclusive of all taxes</small></td>

@@ -29,16 +29,20 @@
 <!-- start #header -->
 <header id="header">
     <div class="strip d-flex justify-content-between px-4 py-1 bg-light">
-        <p class="font-rale font-size-12 text-black-50 m-0">Hey Monark here</p>
+        <p class="font-rale font-size-12 text-black-50 m-0"><?php
+session_start();
+if(isset($_SESSION['name'])){
+echo " Hello ".$_SESSION['name'];
+}
+?></p>
         <div class="font-rale font-size-14">
-            <a href="login.php" class="px-3 border-right border-left text-dark">Login</a>
-            <a href="signup.php" class="px-3 border-right text-dark">Sign Up</a>
+            <a href="index.php" class="px-3 border-right border-left text-dark">Logout</a>
         </div>
     </div>
 
     <!-- Primary Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark color-second-bg">
-        <a class="navbar-brand" href="index.php">Mobile Shopee</a>
+        <a class="navbar-brand" href="index_.php">Mobile Shopee</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -54,13 +58,15 @@
                     <a class="nav-link" href="#new">New phones</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Contact Us</a>
+                    <a class="nav-link" href="orders.php">Your orders</a>
                 </li>
+                <li class="nav-item">
+                <a href="mailto:agarwalvaibhav041@gmail.com" class="nav-link">Contact us</a>                </li>
             </ul>
             <form action="#" class="font-size-14 font-rale">
                 <a href="cart.php" class="py-2 rounded-pill color-primary-bg">
                     <span class="font-size-16 px-2 text-white"><i class="fas fa-shopping-cart"></i></span>
-                    <span class="px-3 py-2 rounded-pill text-dark bg-light"><?php echo count($product->getData('cart')); ?></span>
+                    <span class="px-3 py-2 rounded-pill text-dark bg-light"><?php echo count($product->getDataCart('cart')); ?></span>
                 </a>
             </form>
         </div>
@@ -70,5 +76,3 @@
 </header>
 <!-- !start #header -->
 
-<!-- start #main-site -->
-<main id="main-site">

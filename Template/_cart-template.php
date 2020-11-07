@@ -9,6 +9,10 @@
         if (isset($_POST['wishlist-submit'])){
             $Cart->saveForLater($_POST['item_id']);
         }
+
+            if (isset($_POST['delete-cart'])){
+                $deletedrecord = $Cart->deleteallCart($_POST['item_id']);
+            }
     }
 ?>
 
@@ -20,7 +24,7 @@
         <div class="row">
             <div class="col-sm-9">
                 <?php
-                    foreach ($product->getData('cart') as $item) :
+                    foreach ($product->getDataCart('cart') as $item) :
                         $cart = $product->getProduct($item['item_id']);
                         $subTotal[] = array_map(function ($item){
                 ?>
@@ -87,8 +91,10 @@
                 <div class="sub-total border text-center mt-2">
                     <h6 class="font-size-12 font-rale text-success py-3"><i class="fas fa-check"></i> Your order is eligible for FREE Delivery.</h6>
                     <div class="border-top py-4">
-                        <h5 class="font-baloo font-size-20">Subtotal ( <?php echo isset($subTotal) ? count($subTotal) : 0; ?> item):&nbsp; <span class="text-danger">Rs<span class="text-danger" id="deal-price"><?php echo isset($subTotal) ? $Cart->getSum($subTotal) : 0; ?></span> </span> </h5>
-                        <button type="submit" class="btn btn-warning mt-3">Proceed to Buy</button>
+                        <h5 class="font-baloo font-size-20">Subtotal ( <?php echo isset($subTotal) ? count($subTotal):0; ?> item):&nbsp; <span class="text-danger">Rs<span class="text-danger" id="deal-price"><?php echo isset($subTotal) ? $Cart->getSum($subTotal) : 0; ?></span> </span> </h5>
+                       
+                        <form action="addr.php">
+                        <button type="submit" name="delete-cart" class="btn btn-warning mt-3">Proceed to Buy</button></form>
                     </div>
                 </div>
             </div>
@@ -98,3 +104,14 @@
     </div>
 </section>
 <!-- !Shopping cart section  -->
+
+
+<?php 
+if (isset($subTotal) )   {
+    $s=$Cart->getSum($subTotal) ;
+    $_SESSION['total']=$s;
+}  
+else{
+    $_SESSION['total']=0;
+}                 
+?>

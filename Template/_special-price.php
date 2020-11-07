@@ -11,6 +11,11 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
         // call method addToCart
         $Cart->addToCart($_POST['user_id'], $_POST['item_id']);
     }
+
+    if (isset($_POST['special_price_submit'])){
+        // call method addToorder
+        $order->addToorder($_POST['user_id'], $_POST['item_id']);
+    }                    
 }
 
 $in_cart = $Cart->getCartId($product->getData('cart'));
@@ -48,14 +53,29 @@ $in_cart = $Cart->getCartId($product->getData('cart'));
                             </div>
                             <form method="post">
                                 <input type="hidden" name="item_id" value="<?php echo $item['item_id'] ?? '1'; ?>">
-                                <input type="hidden" name="user_id" value="<?php echo 1; ?>">
+                                <input type="hidden" name="user_id" value="<?php echo $_SESSION['uid'] ?? '1'; ?>">
                                 <?php
-                                if (in_array($item['item_id'], $in_cart ?? [])){
-                                    echo '<button type="submit" disabled class="btn btn-success font-size-12">In the Cart</button>';
-                                }else{
-                                    echo '<button type="submit" name="top_sale_submit" class="btn btn-warning font-size-12">Add to Cart</button>';
-                                }
-                                ?>
+                            $conn = mysqli_connect("localhost", "root", "", "shopee");
+                            if($conn->connect_error){
+                                die("Connection Failed : ". $conn->connect_error);
+                            } 
+                            if(isset($_SESSION['uid'])){
+                            $us=$_SESSION['uid'];
+                            }
+                            else{
+                                $us=-1;
+
+                            }
+                            $i=$item['item_id'];
+                            $query="SELECT * FROM `cart` WHERE `user_id`='$us' AND `item_id`='$i'";
+                            $run=mysqli_query($conn,$query);
+                            if (mysqli_num_rows($run)){
+                                echo '<button type="submit" disabled class="btn btn-success font-size-12">In the Cart</button>';
+                            }else{
+                                echo '<button type="submit" name="top_sale_submit" class="btn btn-warning font-size-12">Add to Cart</button>';
+                            }
+                            ?>
+
                             </form>
                         </div>
                     </div>

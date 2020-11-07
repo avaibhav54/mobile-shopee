@@ -41,4 +41,34 @@ class Product
         }
     }
 
+    public function getDataCart($table)
+    {
+    $result = $this->db->con->query("SELECT * FROM {$table} WHERE `user_id`={$_SESSION['uid']}");
+
+        $resultArray = array();
+
+        // fetch product data one by one
+        while ($item = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+            $resultArray[] = $item;
+        }
+
+        return $resultArray;
+    }
+
+
+
+
+public function getDataorder($table)
+{
+$result = $this->db->con->query("SELECT * FROM `order` WHERE `user_id`={$_SESSION['uid']}");
+
+    $resultArray = array();
+
+    // fetch product data one by one
+    while ($item = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+        $resultArray[] = $item;
+    }
+
+    return $resultArray;
+}
 }

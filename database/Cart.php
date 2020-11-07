@@ -48,6 +48,44 @@ class Cart
         }
     }
 
+
+       // insert into cart table
+       public  function insertIntoorder($params = null, $table = "order"){
+        if ($this->db->con != null){
+            if ($params != null){
+                // "Insert into cart(user_id) values (0)"
+                // get table columns
+                $columns = implode(',', array_keys($params));
+
+                $values = implode(',' , array_values($params));
+
+                // create sql query
+                $query_string = sprintf("INSERT INTO %s(%s) VALUES(%s)", $table, $columns, $values);
+
+                // execute query
+                $result = $this->db->con->query($query_string);
+                return $result;
+            }
+        }
+    }
+
+    // to get user_id and item_id and insert into cart table
+    public  function addToorder($userid, $itemid){
+        if (isset($userid) && isset($itemid)){
+            $params = array(
+                "user_id" => $userid,
+                "item_id" => $itemid
+            );
+
+            // insert data into cart
+            $result = $this->insertIntoorder($params);
+            if ($result){
+                // Reload Page
+                header("Location: " . $_SERVER['PHP_SELF']);
+            }
+        }
+    }
+
     // delete cart item using cart item id
     public function deleteCart($item_id = null, $table = 'cart'){
         if($item_id != null){
@@ -58,7 +96,28 @@ class Cart
             return $result;
         }
     }
+  
 
+    public function deleteallCart($item_id = null, $table = 'cart'){
+            $result = $this->db->con->query("DELETE * FROM {$table}");
+            if($result){
+                header("Location:" . $_SERVER['PHP_SELF']);
+            }
+            return $result;
+        }
+    
+
+    //delete wishlist item using cart item id
+    public function deletewishlist($item_id = null, $table = 'wishlist'){
+        if($item_id != null){
+            $result = $this->db->con->query("DELETE FROM {$table} WHERE item_id={$item_id}");
+            if($result){
+                header("Location:" . $_SERVER['PHP_SELF']);
+            }
+            return $result;
+        }
+    }
+    
     // calculate sub total
     public function getSum($arr){
         if(isset($arr)){
@@ -80,6 +139,7 @@ class Cart
         }
     }
 
+    
     // Save for later
     public function saveForLater($item_id = null, $saveTable = "wishlist", $fromTable = "cart"){
         if ($item_id != null){

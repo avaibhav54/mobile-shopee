@@ -1,6 +1,3 @@
-</main>
-<!-- !start #main-site -->
-
 <!-- start #footer -->
 <footer id="footer" class="bg-dark text-white py-5">
     <div class="container">
@@ -16,8 +13,7 @@
                         <input type="text" class="form-control" placeholder="Email *">
                     </div>
                     <div class="col">
-                        <button type="submit" class="btn btn-primary mb-2">Subscribe</button>
-                    </div>
+                    <a href="mailto:agarwalvaibhav041@gmail.com" class="btn btn-primary my-2">email me</a>                    </div>
                 </form>
             </div>
             <div class="col-lg-2 col-12">
@@ -33,7 +29,7 @@
                 <h4 class="font-rubik font-size-20">Account</h4>
                 <div class="d-flex flex-column flex-wrap">
                     <a href="#" class="font-rale font-size-14 text-white-50 pb-1">My Account</a>
-                    <a href="#" class="font-rale font-size-14 text-white-50 pb-1">Order History</a>
+                    <a href="orders.php" class="font-rale font-size-14 text-white-50 pb-1">Order History</a>
                     <a href="#" class="font-rale font-size-14 text-white-50 pb-1">Wish List</a>
                     <a href="#" class="font-rale font-size-14 text-white-50 pb-1">Newslatters</a>
                 </div>
@@ -42,7 +38,7 @@
     </div>
 </footer>
 <div class="copyright text-center bg-dark text-white py-2">
-    <p class="font-rale font-size-14">&copy; Copyrights 2020. Desing By <a href="#" class="color-second">Monark Mehta</a></p>
+    <p class="font-rale font-size-14">&copy; Copyrights 2020. Design By <a href="#" class="color-second">Vaibhav agarwal</a></p>
 </div>
 <!-- !start #footer -->
 

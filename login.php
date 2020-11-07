@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 $conn = mysqli_connect("localhost", "root", "", "shopee");
 if($conn->connect_error){
     die("Connection Failed : ". $conn->connect_error);
@@ -10,6 +10,8 @@ if(isset($_POST['submit'])){
 
 
 $email=$_POST[ 'email'];
+                       
+$_SESSION['name']=$email;
 
 $pass=$_POST['pass'];
 
@@ -22,11 +24,16 @@ $total=mysqli_num_rows($run);
 
 if ($total==1){
     header('Location:index_.php');
+    while($row=$run->fetch_assoc())
+    {
+        $_SESSION['uid']=$row['user_id'];
+    }
 }
 else{
     echo "Account not found register now";
 }
 }
+
 ?>
 
 
@@ -40,7 +47,14 @@ else{
         crossorigin="anonymous">
     <link rel="stylesheet" href="logins.css">
     <title>Login Form</title>
-
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script>
+      function recaptcha () {​​​​​
+        var loginbtn = document.querySelector("#login_btn");
+        loginbtn.removeAttribute('disabled');
+        loginbtn.style.cursor = 'pointer';
+      }​​​​​
+  </script>
     <script>
      function validate(){
            var email = document.getElementById("email").value;
@@ -57,7 +71,7 @@ else{
 
             if(email.match(r))
             {
-                true;
+                return true;
             }
             else{
                 alert("Email entered is invalid")
@@ -70,24 +84,28 @@ else{
 
 
     </script>
+
 </head>
 
 <body>
 
     <div class="d-flex justify-content-center align-items-center login-container">
-        <form class="login-form text-center" action="" method="post" onclick="return">
+        <form class="login-form text-center" action="" method="post" onsubmit="return validate()">
             <h1 class="mb-5 font-weight-light text-uppercase">Login</h1>
             <div class="form-group">
                 <input type="email" class="form-control rounded-pill form-control-lg" name="email" id="email" placeholder="Email Id">
             </div>
+         
             <div class="form-group">
-                <input type="password" class="form-control rounded-pill form-control-lg" name="pass" placeholder="Password">
+                <input type="password" class="form-control rounded-pill form-control-lg" name="pass" id="pass" placeholder="Password">
             </div>
             <div class="forgot-link form-group d-flex justify-content-between align-items-center">
       
                 <a href="#">Forgot Password?</a>
             </div>
-            <button type="submit" class="btn mt-5 rounded-pill btn-lg btn-custom btn-block text-uppercase" name="submit">Log in</button>
+            <center>
+            <div class="g-recaptcha" data-sitekey="6LevqN8ZAAAAACYpnmFSjFGta9PVBUmcW4lAKN7U" data-callback="recaptcha"></div></center>
+            <button type="submit" class="btn mt-5 rounded-pill btn-lg btn-custom btn-block text-uppercase" id="login_btn" name="submit">Log in</button>
             <p class="mt-3 font-weight-normal">Don't have an account? <a href="signup.php"><strong>Register Now</strong></a></p>
         </form>
     </div>
